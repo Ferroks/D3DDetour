@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using SlimDX;
 using SlimDX.DXGI;
+using WhiteMagic;
 
 namespace D3DDetour
 {

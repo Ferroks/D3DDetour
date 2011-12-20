@@ -19,18 +19,17 @@ namespace D3DDetour
 
         public override void Initialize()
         {
-            Device tmpDevice;
             using (var d3d = new Direct3D())
             {
-                using (tmpDevice = new Device(d3d, 0, DeviceType.Hardware, IntPtr.Zero, CreateFlags.HardwareVertexProcessing, new PresentParameters() { BackBufferWidth = 1, BackBufferHeight = 1 }))
+                using (var tmpDevice = new Device(d3d, 0, DeviceType.Hardware, IntPtr.Zero, CreateFlags.HardwareVertexProcessing, new PresentParameters() { BackBufferWidth = 1, BackBufferHeight = 1 }))
                 {
-                    EndScenePointer = Core.Magic.GetObjectVtableFunction(tmpDevice.ComPointer, VMT_ENDSCENE);
-                    ResetPointer = Core.Magic.GetObjectVtableFunction(tmpDevice.ComPointer, VMT_RESET);
+                    EndScenePointer = Pulse.Magic.GetObjectVtableFunction(tmpDevice.ComPointer, VMT_ENDSCENE);
+                    ResetPointer = Pulse.Magic.GetObjectVtableFunction(tmpDevice.ComPointer, VMT_RESET);
                 }
             }
 
-            _endSceneDelegate = Core.Magic.RegisterDelegate<Direct3D9EndScene>(EndScenePointer);
-            _endSceneHook = Core.Magic.Detours.CreateAndApply(_endSceneDelegate, new Direct3D9EndScene(Callback), "D9EndScene");
+            _endSceneDelegate = Pulse.Magic.RegisterDelegate<Direct3D9EndScene>(EndScenePointer);
+            _endSceneHook = Pulse.Magic.Detours.CreateAndApply(_endSceneDelegate, new Direct3D9EndScene(Callback), "D9EndScene");
         }
 
         private int Callback(IntPtr device)

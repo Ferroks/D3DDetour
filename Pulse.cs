@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Windows.Forms;
+using WhiteMagic;
 using WhiteMagic.Internals;
 
 namespace D3DDetour
 {
     public static class Pulse
     {
+        public static readonly Magic Magic = new Magic();
         private static D3DHook Hook;
 
         public static void Initialize(D3DVersion ver)

@@ -45,15 +45,15 @@ namespace D3DDetour
                     {
                         using (sc)
                         {
-                            PresentPointer = Core.Magic.GetObjectVtableFunction(sc.ComPointer, VMT_PRESENT);
-                            ResetTargetPointer = Core.Magic.GetObjectVtableFunction(sc.ComPointer, VMT_RESIZETARGET);
+                            PresentPointer = Pulse.Magic.GetObjectVtableFunction(sc.ComPointer, VMT_PRESENT);
+                            ResetTargetPointer = Pulse.Magic.GetObjectVtableFunction(sc.ComPointer, VMT_RESIZETARGET);
                         }
                     }
                 }
             }
 
-            _presentDelegate = Core.Magic.RegisterDelegate<Direct3D11Present>(PresentPointer);
-            _presentHook = Core.Magic.Detours.CreateAndApply(_presentDelegate, new Direct3D11Present(Callback), "D11Present");
+            _presentDelegate = Pulse.Magic.RegisterDelegate<Direct3D11Present>(PresentPointer);
+            _presentHook = Pulse.Magic.Detours.CreateAndApply(_presentDelegate, new Direct3D11Present(Callback), "D11Present");
         }
 
         private int Callback(IntPtr swapChainPtr, int syncInterval, PresentFlags flags)

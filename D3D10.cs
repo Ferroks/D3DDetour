@@ -41,15 +41,15 @@ namespace D3DDetour
                         };
                         using (var sc = new SwapChain(fac, tmpDevice, desc))
                         {
-                            PresentPointer = Core.Magic.GetObjectVtableFunction(sc.ComPointer, VMT_PRESENT);
-                            ResetTargetPointer = Core.Magic.GetObjectVtableFunction(sc.ComPointer, VMT_RESIZETARGET);
+                            PresentPointer = Pulse.Magic.GetObjectVtableFunction(sc.ComPointer, VMT_PRESENT);
+                            ResetTargetPointer = Pulse.Magic.GetObjectVtableFunction(sc.ComPointer, VMT_RESIZETARGET);
                         }
                     }
                 }
             }
 
-            _presentDelegate = Core.Magic.RegisterDelegate<Direct3D10Present>(PresentPointer);
-            _presentHook = Core.Magic.Detours.CreateAndApply(_presentDelegate, new Direct3D10Present(Callback), "D10Present");
+            _presentDelegate = Pulse.Magic.RegisterDelegate<Direct3D10Present>(PresentPointer);
+            _presentHook = Pulse.Magic.Detours.CreateAndApply(_presentDelegate, new Direct3D10Present(Callback), "D10Present");
         }
 
         private int Callback(IntPtr swapChainPtr, int syncInterval, PresentFlags flags)
